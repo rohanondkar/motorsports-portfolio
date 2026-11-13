@@ -45,9 +45,9 @@ export function TrackMesh({ track, wetness, curve }: TrackMeshProps) {
   const asphalt = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
-        color: '#1c1c1e',
-        metalness: 0.15 + wetness * 0.45,
-        roughness: 0.85 - wetness * 0.55,
+        color: '#2a2a2e',
+        metalness: 0.2 + wetness * 0.4,
+        roughness: Math.max(0.2, 0.75 - wetness * 0.5),
       }),
     [wetness],
   )

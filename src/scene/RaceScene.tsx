@@ -76,16 +76,15 @@ export function RaceScene() {
 
   return (
     <>
-      <Lighting
-        tod={tod}
-        weather={weather}
-        shadows={quality.shadows}
-        shadowMapSize={quality.shadowMapSize}
-      />
-      {view === 'race' && <SkyDome tod={tod} />}
-
       {view === 'race' && (
         <>
+          <Lighting
+            tod={tod}
+            weather={weather}
+            shadows={quality.shadows}
+            shadowMapSize={quality.shadowMapSize}
+          />
+          <SkyDome tod={tod} />
           <TrackMesh track={track} wetness={weather.wetness} curve={curve} />
           <WeatherFX weather={weather} enabled={quality.particles} />
           {visibleCars.map((car) => (
@@ -111,17 +110,24 @@ export function RaceScene() {
               reducedMotion={reducedMotion}
             />
           )}
-          {focusDef && (
-            <FocusFollowLight curve={curve} offset={focusDef.pathOffset} />
-          )}
+          {focusDef && <FocusFollowLight curve={curve} offset={focusDef.pathOffset} />}
         </>
       )}
 
-      {view === 'room' && room === 'engineer' && <EngineerRoom />}
-      {view === 'room' && room === 'vision' && <VisionRoom />}
-      {view === 'room' && room === 'windtunnel' && <WindTunnelRoom />}
-      {view === 'room' && room === 'briefing' && <BriefingRoom />}
-      {view === 'room' && room === 'paddock' && <PaddockRoom />}
+      {view === 'room' && (
+        <>
+          <CameraDirector
+            curve={curve}
+            focusOffset={focusDef?.pathOffset ?? 0}
+            reducedMotion={reducedMotion}
+          />
+          {room === 'engineer' && <EngineerRoom />}
+          {room === 'vision' && <VisionRoom />}
+          {room === 'windtunnel' && <WindTunnelRoom />}
+          {room === 'briefing' && <BriefingRoom />}
+          {room === 'paddock' && <PaddockRoom />}
+        </>
+      )}
     </>
   )
 }
