@@ -1,5 +1,6 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
+import type * as THREE from 'three'
 import { CARS } from '../data/cars'
 import { TRACKS, WEATHER, TOD } from '../data/environments'
 import { PROJECTS } from '../data/projects'
@@ -16,6 +17,23 @@ import { VisionRoom } from '../rooms/VisionRoom'
 import { WindTunnelRoom } from '../rooms/WindTunnelRoom'
 import { BriefingRoom } from '../rooms/BriefingRoom'
 import { PaddockRoom } from '../rooms/PaddockRoom'
+
+function FocusFollowLight({
+  curve,
+  offset,
+}: {
+  curve: THREE.CatmullRomCurve3
+  offset: number
+}) {
+  const ref = useRef<THREE.PointLight>(null)
+  useFrame(() => {
+    if (!ref.current) return
+    const t = ((offset + raceClock.t * raceClock.speed) % 1 + 1) % 1
+    const p = curve.getPointAt(t)
+    ref.current.position.set(p.x, p.y + 3.2, p.z)
+  })
+  return <pointLight ref={ref} intensity={2.2} color="#fff2d6" distance={14} decay={2} />
+}
 
 export function RaceScene() {
   const trackId = useAppStore((s) => s.trackId)
@@ -92,6 +110,9 @@ export function RaceScene() {
               focusOffset={focusDef.pathOffset}
               reducedMotion={reducedMotion}
             />
+          )}
+          {focusDef && (
+            <FocusFollowLight curve={curve} offset={focusDef.pathOffset} />
           )}
         </>
       )}

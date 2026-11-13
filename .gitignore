@@ -1,3 +1,6 @@
+# GitHub Actions (push separately if token lacks workflow scope)
+# .github/workflows/
+
 # Logs
 logs
 *.log

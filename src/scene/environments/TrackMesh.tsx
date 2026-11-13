@@ -11,7 +11,7 @@ interface TrackMeshProps {
 export function TrackMesh({ track, wetness, curve }: TrackMeshProps) {
   const { ribbon } = useMemo(() => {
     const frames = curve.computeFrenetFrames(200, true)
-    const halfW = 3.2
+    const halfW = 4.2
     const positions: number[] = []
     const uvs: number[] = []
     const indices: number[] = []

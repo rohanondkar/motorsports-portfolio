@@ -55,7 +55,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   seriesFilter: 'all',
   trackId: 'spa',
   weatherId: 'clear',
-  todId: 'dusk',
+  todId: 'day',
   quality: settingsForTier('medium'),
   qualityOverride: null,
   layoutMode: 'landscape',

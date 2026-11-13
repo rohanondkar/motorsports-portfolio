@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import * as THREE from 'three'
 import type { TodPreset } from '../../data/environments'
 
@@ -6,48 +6,30 @@ interface SkyDomeProps {
   tod: TodPreset
 }
 
+/** Gradient sky without custom GLSL (WebGL2-safe). */
 export function SkyDome({ tod }: SkyDomeProps) {
-  const mat = useMemo(() => {
-    return new THREE.ShaderMaterial({
-      uniforms: {
-        topColor: { value: new THREE.Color(tod.skyTop) },
-        bottomColor: { value: new THREE.Color(tod.skyBottom) },
-        offset: { value: 12 },
-        exponent: { value: 0.55 },
-      },
-      vertexShader: `
-        varying vec3 vWorldPosition;
-        void main() {
-          vec4 worldPosition = modelMatrix * vec4(position, 1.0);
-          vWorldPosition = worldPosition.xyz;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      fragmentShader: `
-        uniform vec3 topColor;
-        uniform vec3 bottomColor;
-        uniform float offset;
-        uniform float exponent;
-        varying vec3 vWorldPosition;
-        void main() {
-          float h = normalize(vWorldPosition + vec3(0.0, offset, 0.0)).y;
-          float t = max(pow(max(h, 0.0), exponent), 0.0);
-          gl_FragColor = vec4(mix(bottomColor, topColor, t), 1.0);
-        }
-      `,
-      side: THREE.BackSide,
-      depthWrite: false,
-    })
-  }, [])
-
-  useEffect(() => {
-    mat.uniforms.topColor.value.set(tod.skyTop)
-    mat.uniforms.bottomColor.value.set(tod.skyBottom)
-  }, [mat, tod.skyTop, tod.skyBottom])
+  const geo = useMemo(() => {
+    const g = new THREE.SphereGeometry(80, 32, 16)
+    const colors = new Float32Array(g.attributes.position.count * 3)
+    const top = new THREE.Color(tod.skyTop)
+    const bottom = new THREE.Color(tod.skyBottom)
+    const pos = g.attributes.position
+    const c = new THREE.Color()
+    for (let i = 0; i < pos.count; i++) {
+      const y = pos.getY(i)
+      const t = THREE.MathUtils.clamp((y + 20) / 50, 0, 1)
+      c.copy(bottom).lerp(top, Math.pow(t, 0.55))
+      colors[i * 3] = c.r
+      colors[i * 3 + 1] = c.g
+      colors[i * 3 + 2] = c.b
+    }
+    g.setAttribute('color', new THREE.BufferAttribute(colors, 3))
+    return g
+  }, [tod.skyTop, tod.skyBottom])
 
   return (
-    <mesh material={mat}>
-      <sphereGeometry args={[80, 32, 16]} />
+    <mesh geometry={geo}>
+      <meshBasicMaterial vertexColors side={THREE.BackSide} depthWrite={false} />
     </mesh>
   )
 }

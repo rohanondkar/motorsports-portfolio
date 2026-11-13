@@ -15,10 +15,12 @@ export function CanvasRoot() {
           antialias: quality.antialias,
           powerPreference: quality.tier === 'low' ? 'low-power' : 'high-performance',
           alpha: false,
+          preserveDrawingBuffer: true,
         }}
-        camera={{ position: [0, 4, 10], fov: 38, near: 0.1, far: 200 }}
+        camera={{ position: [0, 3, 8], fov: 32, near: 0.1, far: 200 }}
         onCreated={({ gl }) => {
-          gl.setClearColor('#050505')
+          gl.setClearColor('#1a2a3a')
+          gl.toneMappingExposure = 1.15
         }}
       >
         <Suspense fallback={null}>

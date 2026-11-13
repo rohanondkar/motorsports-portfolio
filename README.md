@@ -25,14 +25,17 @@ npm run preview
 
 ## Deploy
 
-Push to `main` runs `.github/workflows/deploy.yml`, which builds and publishes `dist/` to `rohanondkar/rohanondkar.github.io`.
+Live site: [https://rohanondkar.github.io](https://rohanondkar.github.io)
 
-Set repo secret `PAGES_DEPLOY_TOKEN` to a PAT with `repo` scope for the Pages repo (or deploy manually):
+Source: [rohanondkar/motorsports-portfolio](https://github.com/rohanondkar/motorsports-portfolio)
 
 ```bash
-npm run build
-# copy dist contents into rohanondkar.github.io and push
+npm run deploy
 ```
+
+That builds and pushes `dist/` to `rohanondkar/rohanondkar.github.io`.
+
+Optional CI: add repo secret `PAGES_DEPLOY_TOKEN` (PAT with `repo` + `workflow`), then commit `.github/workflows/deploy.yml` so pushes auto-deploy.
 
 ## Controls
 

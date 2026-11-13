@@ -20,16 +20,19 @@ export function Lighting({ tod, weather, shadows, shadowMapSize }: LightingProps
   return (
     <>
       <color attach="background" args={[tod.skyBottom]} />
-      <fog attach="fog" args={[weather.fogColor, 18, 18 + 1 / Math.max(weather.fogDensity, 0.004)]} />
-      <ambientLight intensity={tod.ambientIntensity} color={tod.ambient} />
+      <fog
+        attach="fog"
+        args={[weather.fogColor, 28, 28 + 1 / Math.max(weather.fogDensity, 0.004)]}
+      />
+      <ambientLight intensity={tod.ambientIntensity + 0.15} color={tod.ambient} />
       <hemisphereLight
-        intensity={0.55}
+        intensity={0.7}
         color={tod.hemiSky}
         groundColor={tod.hemiGround}
       />
       <directionalLight
         castShadow={shadows}
-        intensity={sunIntensity}
+        intensity={sunIntensity * 1.15}
         color={tod.sunColor}
         position={sunPos}
         shadow-mapSize-width={shadowMapSize}

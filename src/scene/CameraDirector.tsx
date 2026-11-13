@@ -74,21 +74,21 @@ export function CameraDirector({
 
     desired
       .copy(pos)
-      .addScaledVector(tangent, -3.4)
-      .addScaledVector(normal, 1.6 + sway)
-    desired.y += elev + 0.9
+      .addScaledVector(tangent, -2.6)
+      .addScaledVector(normal, 1.15 + sway * 0.7)
+    desired.y += elev + 0.55
 
-    desired.addScaledVector(normal, pointer.current.x * 0.35)
-    desired.y += pointer.current.y * 0.2
+    desired.addScaledVector(normal, pointer.current.x * 0.28)
+    desired.y += pointer.current.y * 0.15
 
-    camera.position.lerp(desired, 1 - Math.exp(-2.2 * dt))
-    look.copy(pos).addScaledVector(tangent, 1.2)
-    look.y = pos.y + 0.55
-    target.lerp(look, 1 - Math.exp(-3 * dt))
+    camera.position.lerp(desired, 1 - Math.exp(-2.6 * dt))
+    look.copy(pos).addScaledVector(tangent, 0.85)
+    look.y = pos.y + 0.45
+    target.lerp(look, 1 - Math.exp(-3.5 * dt))
     camera.lookAt(target)
 
     if (camera instanceof THREE.PerspectiveCamera) {
-      camera.fov += (38 - camera.fov) * (1 - Math.exp(-2 * dt))
+      camera.fov += (32 - camera.fov) * (1 - Math.exp(-2 * dt))
       camera.updateProjectionMatrix()
     }
   })
