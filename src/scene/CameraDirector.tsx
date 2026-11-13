@@ -45,15 +45,25 @@ export function CameraDirector({
   useEffect(() => {
     if (view === 'room') {
       roomCam.current.active = true
+      gsap.killTweensOf(camera.position)
       gsap.to(camera.position, {
         x: 0,
-        y: 3.2,
-        z: 6.5,
-        duration: reducedMotion ? 0.2 : 1.1,
+        y: 2.6,
+        z: 5.2,
+        duration: reducedMotion ? 0.15 : 0.9,
         ease: 'power2.inOut',
       })
+      if (camera instanceof THREE.PerspectiveCamera) {
+        gsap.to(camera, {
+          fov: 42,
+          duration: reducedMotion ? 0.15 : 0.9,
+          ease: 'power2.inOut',
+          onUpdate: () => camera.updateProjectionMatrix(),
+        })
+      }
     } else {
       roomCam.current.active = false
+      gsap.killTweensOf(camera.position)
     }
   }, [view, camera, reducedMotion])
 

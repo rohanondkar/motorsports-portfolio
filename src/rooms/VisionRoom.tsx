@@ -1,9 +1,11 @@
 import { useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { useRoomEnvironment } from './useRoomEnvironment'
 
 /** Onboard vision HUD — lane lines over a track plane. */
 export function VisionRoom() {
+  useRoomEnvironment('#020805', 6, 40)
   const laneMat = useMemo(
     () =>
       new THREE.MeshBasicMaterial({
@@ -20,10 +22,8 @@ export function VisionRoom() {
 
   return (
     <group>
-      <color attach="background" args={['#020805']} />
-      <fog attach="fog" args={['#020805', 6, 40]} />
-      <ambientLight intensity={0.4} />
-      <directionalLight position={[5, 10, 2]} intensity={0.8} />
+      <ambientLight intensity={0.45} />
+      <directionalLight position={[5, 10, 2]} intensity={0.9} />
 
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
         <planeGeometry args={[30, 60]} />

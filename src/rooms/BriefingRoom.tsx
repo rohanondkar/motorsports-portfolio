@@ -1,10 +1,11 @@
+import { useRoomEnvironment } from './useRoomEnvironment'
+
 /** Night-race strategy briefing — table under floodlights. */
 export function BriefingRoom() {
+  useRoomEnvironment('#050508', 6, 22)
   return (
     <group>
-      <color attach="background" args={['#050508']} />
-      <fog attach="fog" args={['#050508', 6, 22]} />
-      <ambientLight intensity={0.15} />
+      <ambientLight intensity={0.2} />
       <spotLight
         position={[0, 7, 0]}
         intensity={3.5}

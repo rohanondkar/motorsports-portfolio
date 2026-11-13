@@ -1,9 +1,11 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { useRoomEnvironment } from './useRoomEnvironment'
 
 /** Pit wall / team radio — monitors, desk, subtle static flicker. */
 export function EngineerRoom() {
+  useRoomEnvironment('#06080c', 6, 24)
   const flicker = useRef(1)
   const screenMat = useMemo(
     () =>
@@ -25,11 +27,9 @@ export function EngineerRoom() {
 
   return (
     <group>
-      <color attach="background" args={['#06080c']} />
-      <fog attach="fog" args={['#06080c', 8, 28]} />
-      <ambientLight intensity={0.25} />
-      <spotLight position={[2, 6, 4]} intensity={2.5} angle={0.5} penumbra={0.6} castShadow />
-      <pointLight position={[-2, 2, 1]} intensity={0.8} color="#00d2be" />
+      <ambientLight intensity={0.35} />
+      <spotLight position={[2, 6, 4]} intensity={3.2} angle={0.55} penumbra={0.6} castShadow />
+      <pointLight position={[-2, 2, 1]} intensity={1.2} color="#00d2be" />
 
       {/* Floor */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow position={[0, 0, 0]}>

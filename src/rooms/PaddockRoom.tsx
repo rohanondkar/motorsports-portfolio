@@ -1,11 +1,13 @@
+import { useRoomEnvironment } from './useRoomEnvironment'
+
 /** Paddock hospitality / onboarding bay. */
 export function PaddockRoom() {
+  useRoomEnvironment('#1a140e', 10, 35)
   return (
     <group>
-      <color attach="background" args={['#1a140e']} />
-      <ambientLight intensity={0.45} />
-      <directionalLight position={[5, 8, 3]} intensity={1.2} castShadow />
-      <hemisphereLight intensity={0.4} color="#f0e6d2" groundColor="#3a2a1a" />
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[5, 8, 3]} intensity={1.3} castShadow />
+      <hemisphereLight intensity={0.45} color="#f0e6d2" groundColor="#3a2a1a" />
 
       <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <planeGeometry args={[20, 20]} />

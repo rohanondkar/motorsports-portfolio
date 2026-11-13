@@ -1,9 +1,11 @@
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { useRoomEnvironment } from './useRoomEnvironment'
 
 /** Wind tunnel / CFD garage with a car body and flow streaks. */
 export function WindTunnelRoom() {
+  useRoomEnvironment('#0c1018', 8, 30)
   const streaks = useRef<THREE.Group>(null)
 
   useFrame((_, dt) => {
@@ -16,10 +18,9 @@ export function WindTunnelRoom() {
 
   return (
     <group>
-      <color attach="background" args={['#0c1018']} />
-      <ambientLight intensity={0.35} />
-      <directionalLight position={[4, 8, 2]} intensity={1.4} castShadow />
-      <pointLight position={[-3, 3, 0]} color="#4cc9f0" intensity={1.2} />
+      <ambientLight intensity={0.4} />
+      <directionalLight position={[4, 8, 2]} intensity={1.5} castShadow />
+      <pointLight position={[-3, 3, 0]} color="#4cc9f0" intensity={1.3} />
 
       {/* Tunnel walls */}
       <mesh position={[0, 2, 0]}>
