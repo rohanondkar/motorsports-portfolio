@@ -1,4 +1,5 @@
-import type * as THREE from 'three'
+import { useMemo } from 'react'
+import * as THREE from 'three'
 
 export function Wheel({
   position,
@@ -13,14 +14,30 @@ export function Wheel({
   rubber: THREE.Material
   carbon: THREE.Material
 }) {
+  // Tire as a thick short cylinder (reliable orientation) + rim face
+  const tire = useMemo(() => {
+    const g = new THREE.CylinderGeometry(radius, radius, width, 24)
+    g.rotateZ(Math.PI / 2)
+    return g
+  }, [radius, width])
+
+  const rim = useMemo(() => {
+    const g = new THREE.CylinderGeometry(radius * 0.62, radius * 0.62, width * 0.55, 20)
+    g.rotateZ(Math.PI / 2)
+    return g
+  }, [radius, width])
+
+  const disc = useMemo(() => {
+    const g = new THREE.CylinderGeometry(radius * 0.45, radius * 0.45, width * 0.7, 16)
+    g.rotateZ(Math.PI / 2)
+    return g
+  }, [radius, width])
+
   return (
     <group position={position}>
-      <mesh castShadow rotation={[0, 0, Math.PI / 2]} material={rubber}>
-        <cylinderGeometry args={[radius, radius, width, 22]} />
-      </mesh>
-      <mesh rotation={[0, 0, Math.PI / 2]} material={carbon}>
-        <cylinderGeometry args={[radius * 0.55, radius * 0.55, width + 0.02, 14]} />
-      </mesh>
+      <mesh castShadow geometry={tire} material={rubber} />
+      <mesh castShadow geometry={rim} material={carbon} />
+      <mesh geometry={disc} material={carbon} />
     </group>
   )
 }
