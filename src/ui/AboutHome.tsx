@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { formatEstClock, getEstAtmosphere } from '../time/estPeriod'
+import { useFeaturedCar } from '../cars/CarContext'
 
 export function AboutHome() {
+  const car = useFeaturedCar()
   const [clock, setClock] = useState(() => formatEstClock())
   const [label, setLabel] = useState(() => getEstAtmosphere().label)
 
@@ -20,19 +22,30 @@ export function AboutHome() {
       <header className="about-home__brand">
         <p className="about-home__kicker">{label}</p>
         <h1>Rohan Ondkar</h1>
-        <p className="about-home__tag">At home in motorsport.</p>
+        <p className="about-home__tag">Software engineer. Motorsport lifeline.</p>
       </header>
 
       <div className="about-home__copy">
         <p>
-          Software engineer. Builder. The garage light is on because the work never really leaves
-          the paddock — F1 from 2008 on, WEC across the classes, Garage 56, DTM, IndyCar, rally,
-          Super GT, Dakar.
+          I’m Rohan — a software engineer who builds systems the way a race weekend unfolds:
+          telemetry, vision, simulation, and radio. By day I write code; the rest of the time I’m
+          deep in F1 (2008–present), WEC across Hypercar / LMP2 / LMGT3, Garage 56, DTM, IndyCar,
+          rally, Super GT, and Dakar.
         </p>
         <p>
-          This is the front of the house: a driveway, a car, and the sky matching Eastern time.
-          Stay awhile.
+          This driveway is the front of my house on the web. The sky follows Eastern time. Each
+          visit parks a different car from the collection out front — today it’s the{' '}
+          <strong>{car.name}</strong> ({car.year}).
         </p>
+        <p className="about-home__carline">
+          <span className="about-home__swatch" style={{ background: car.livery.primary }} />
+          <span className="about-home__swatch" style={{ background: car.livery.secondary }} />
+          <span className="about-home__swatch" style={{ background: car.livery.accent }} />
+          <span>
+            {car.series} · {car.shortName}
+          </span>
+        </p>
+        <p className="about-home__muted">{car.blurb}</p>
         <div className="about-home__actions">
           <a
             className="about-home__cta"

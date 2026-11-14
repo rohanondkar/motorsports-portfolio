@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Environment } from '@react-three/drei'
 import { getEstAtmosphere, type EstAtmosphere } from '../time/estPeriod'
+import { useFeaturedCar } from '../cars/CarContext'
+import { GarageCar } from '../cars/GarageCar'
 import { SkyGradient } from './SkyGradient'
 import { LightingRig } from './LightingRig'
 import { TimeFX } from './TimeFX'
 import { HomeProperty } from './HomeProperty'
-import { SportsCar } from './SportsCar'
 import { HomeCamera } from './HomeCamera'
 
 function envPreset(period: EstAtmosphere['period']) {
@@ -15,6 +16,7 @@ function envPreset(period: EstAtmosphere['period']) {
 }
 
 export function HomeScene() {
+  const car = useFeaturedCar()
   const [atm, setAtm] = useState<EstAtmosphere>(() => getEstAtmosphere())
 
   useEffect(() => {
@@ -31,7 +33,7 @@ export function HomeScene() {
       <Environment preset={envPreset(atm.period)} environmentIntensity={0.45} />
       <TimeFX atm={atm} />
       <HomeProperty />
-      <SportsCar position={[0, 0, 2.2]} />
+      <GarageCar def={car} position={[0, 0, 2.2]} />
       <HomeCamera />
     </>
   )
