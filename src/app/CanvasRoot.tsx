@@ -1,31 +1,47 @@
-import { Canvas } from '@react-three/fiber'
-import { Suspense } from 'react'
-import { RaceScene } from '../scene/RaceScene'
-import { useAppStore } from '../store/useAppStore'
+import { Canvas, useThree } from '@react-three/fiber'
+import { Suspense, useEffect, useState } from 'react'
+import { HomeScene } from '../scene/HomeScene'
+import { getEstAtmosphere } from '../time/estPeriod'
+
+function ExposureSync({ exposure }: { exposure: number }) {
+  const gl = useThree((s) => s.gl)
+  useEffect(() => {
+    gl.toneMappingExposure = exposure
+  }, [gl, exposure])
+  return null
+}
 
 export function CanvasRoot() {
-  const quality = useAppStore((s) => s.quality)
+  const [exposure, setExposure] = useState(() => getEstAtmosphere().exposure)
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      setExposure(getEstAtmosphere().exposure)
+    }, 60_000)
+    return () => window.clearInterval(id)
+  }, [])
 
   return (
     <div className="canvas-root">
       <Canvas
-        shadows={quality.shadows}
-        dpr={quality.dpr}
+        shadows
+        dpr={[1, 1.75]}
         gl={{
-          antialias: quality.antialias,
-          powerPreference: quality.tier === 'low' ? 'low-power' : 'high-performance',
+          antialias: true,
+          powerPreference: 'high-performance',
           alpha: false,
           preserveDrawingBuffer: true,
         }}
-        camera={{ position: [0, 3, 8], fov: 32, near: 0.1, far: 200 }}
+        camera={{ position: [5, 2.2, 7.5], fov: 38, near: 0.1, far: 200 }}
         onCreated={({ gl }) => {
-          gl.setClearColor('#1a2a3a')
-          gl.toneMappingExposure = 1.15
+          gl.toneMappingExposure = exposure
+          gl.setClearColor('#2a2030')
         }}
       >
         <Suspense fallback={null}>
-          <RaceScene />
+          <HomeScene />
         </Suspense>
+        <ExposureSync exposure={exposure} />
       </Canvas>
     </div>
   )

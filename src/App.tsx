@@ -1,5 +1,11 @@
-import { Shell } from './app/Shell'
+import { CanvasRoot } from './app/CanvasRoot'
+import { AboutHome } from './ui/AboutHome'
 
 export default function App() {
-  return <Shell />
+  return (
+    <div className="shell">
+      <CanvasRoot />
+      <AboutHome />
+    </div>
+  )
 }
